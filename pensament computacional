@@ -1,0 +1,39 @@
+```python
+# Programa de càlcul de frenada d'un vehicle
+
+def calcular_acceleracio(vi, vf, distancia):
+    return (vf**2 - vi**2) / (2 * distancia)
+
+def calcular_forca(massa, acceleracio):
+    return massa * acceleracio
+
+def classificar_frenada(acceleracio):
+    a = abs(acceleracio)
+
+    if a < 3:
+        return "Frenada suau"
+    elif a < 6:
+        return "Frenada normal"
+    else:
+        return "Frenada brusca"
+
+def main():
+
+    print("=== CÀLCUL DE FRENADA D'UN VEHICLE ===")
+
+    massa = float(input("Introdueix la massa del vehicle (kg): "))
+    vi = float(input("Introdueix la velocitat inicial (m/s): "))
+    vf = float(input("Introdueix la velocitat final (m/s): "))
+    distancia = float(input("Introdueix la distància de frenada (m): "))
+
+    acceleracio = calcular_acceleracio(vi, vf, distancia)
+    forca = calcular_forca(massa, acceleracio)
+    tipus = classificar_frenada(acceleracio)
+
+    print("\n--- RESULTATS ---")
+    print(f"Acceleració: {acceleracio:.2f} m/s²")
+    print(f"Força de frenada: {forca:.2f} N")
+    print(f"Tipus de frenada: {tipus}")
+
+main()
+```
