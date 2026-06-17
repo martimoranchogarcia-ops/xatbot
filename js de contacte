@@ -1,0 +1,64 @@
+/* ===========================================================
+   BARÇABOT — contact-form.js
+   Validació bàsica del formulari de contacte (sense backend)
+   =========================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  const successBox = document.getElementById('form-success');
+
+  const fields = {
+    nom: {
+      input: document.getElementById('nom'),
+      error: document.getElementById('error-nom'),
+      validate: (value) => value.trim().length >= 2,
+      message: 'Escriu el teu nom (mínim 2 caràcters).'
+    },
+    email: {
+      input: document.getElementById('email'),
+      error: document.getElementById('error-email'),
+      validate: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()),
+      message: 'Introdueix un correu electrònic vàlid.'
+    },
+    missatge: {
+      input: document.getElementById('missatge'),
+      error: document.getElementById('error-missatge'),
+      validate: (value) => value.trim().length >= 10,
+      message: 'El missatge ha de tenir almenys 10 caràcters.'
+    }
+  };
+
+  function validateField(field) {
+    const value = field.input.value;
+    const isValid = field.validate(value);
+    field.error.textContent = isValid ? '' : field.message;
+    return isValid;
+  }
+
+  Object.values(fields).forEach((field) => {
+    field.input.addEventListener('blur', () => validateField(field));
+    field.input.addEventListener('input', () => {
+      if (field.error.textContent) validateField(field);
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const allValid = Object.values(fields).every((field) => validateField(field));
+
+    if (allValid) {
+      successBox.classList.add('visible');
+      successBox.textContent = 'Missatge enviat correctament! Et respondrem aviat.';
+      form.reset();
+
+      setTimeout(() => {
+        successBox.classList.remove('visible');
+      }, 4000);
+    } else {
+      successBox.classList.remove('visible');
+    }
+  });
+});
